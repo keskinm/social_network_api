@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -56,5 +57,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return $r;
     }
+
+    public function getUserFields(array $data): array
+    {
+        $id = $data['id'];
+
+        # getOnlySpecified Fields (fields contain a list of wanted fields)
+        if (isset($data['fields'])) {
+            $fields = '';
+            $i=0;
+            foreach ($data['fields'] as $value)
+            {
+                $i++;
+                $end = ($i==count($data['fields'])) ? '':',';
+                $fields = $fields . ' u.' . $value . $end;
+            }
+
+    }
+        # Else we take all elements
+        else {
+            $fields = 'u.username, u.email, u.roles, u.profile_image_id';
+        }
+
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT ' . $fields . '
+            FROM App\Entity\User u
+            WHERE u.id = :user_id
+            '
+        )->setParameters(['user_id' => $id]);
+        return $query->getResult();
+    }
+
 
 }

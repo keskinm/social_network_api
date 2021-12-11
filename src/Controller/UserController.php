@@ -44,6 +44,15 @@ class UserController extends AbstractController
         return new Response($this->serializer->serialize($result, 'json'), Response::HTTP_OK, $this->headers);
     }
 
+    #[Route('/getUserFields', name: 'getUserFields')]
+    public function getUserFields(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $result = $repository->getUserFields($data);
+        return new Response($this->serializer->serialize($result, 'json'), Response::HTTP_OK, $this->headers);
+    }
+
     #[Route('/register', name: 'register_user', methods: ['POST'])]
     public function register(Request $request, UserPasswordHasherInterface $hasher,): Response
     {
