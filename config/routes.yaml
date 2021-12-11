@@ -1,0 +1,28 @@
+authentication_token:
+  path: /api/authentication-token
+  methods: ['POST']
+
+createUserSettings:
+  path: /api/createUserSettings
+  methods: ['POST']
+  controller: App\Controller\UserSettingsController::createUserSettings
+
+getUserSettings:
+  path: /api/getUserSettings
+  methods: ['POST', 'GET']
+  controller: App\Controller\UserSettingsController::getUserSettings
+
+getUserSettingsByUserName:
+  path: /api/getUserSettingsByUserName
+  methods: ['POST', 'GET']
+  controller: App\Controller\UserSettingsController::getUserSettingsByUserName
+
+updateUserSettingsField:
+  path: /api/updateUserSettingsField
+  methods: ['POST', 'GET']
+  controller: App\Controller\UserSettingsController::updateUserSettingsField
+
+updateUserField:
+  path: /api/updateUserField
+  methods: ['POST', 'GET']
+  controller: App\Controller\UserController::updateUserField
